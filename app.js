@@ -11,7 +11,7 @@ const { urlencoded: _urlencoded } = bodyparserpkg;
 
 import errorMiddleware from "./middleware/error.js";
 
-config({ path: "BackEnd/config/config.env" });
+config({ path: "config/config.env" });
 
 app.use(json({ limit: '5mb' }));
 app.use(urlencoded({ limit: '5mb', extended: true }));

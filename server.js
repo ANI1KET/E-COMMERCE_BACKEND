@@ -3,7 +3,7 @@ import { v2 } from "cloudinary";
 import connectDatabase from './config/database.js';
 
 import { config } from 'dotenv';
-config({ path: "BackEnd/config/config.env" });
+config({ path: "config/config.env" });
 
 connectDatabase();
 
