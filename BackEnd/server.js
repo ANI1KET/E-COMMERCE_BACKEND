@@ -1,13 +1,13 @@
-const app = require('./app');
-const cloudinary = require("cloudinary");
-const connectDatabase = require('./config/database');
+import app from './app.js';
+import { v2 } from "cloudinary";
+import connectDatabase from './config/database.js';
 
-const dotenv = require('dotenv');
-dotenv.config({ path: "BackEnd/config/config.env" });
+import { config } from 'dotenv';
+config({ path: "BackEnd/config/config.env" });
 
 connectDatabase();
 
-cloudinary.v2.config({
+v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,

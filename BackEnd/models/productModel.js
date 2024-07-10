@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
     name: {
         type: String,
         required: [true, "Please Enter product Name"],
@@ -48,7 +48,7 @@ const productSchema = new mongoose.Schema({
     reviews: [
         {
             reviewerId: {
-                type: mongoose.Schema.ObjectId,
+                type: Schema.ObjectId,
                 ref: "User",
                 required: true,
             },
@@ -69,7 +69,7 @@ const productSchema = new mongoose.Schema({
         },
     ],
     CreatedUserId: {
-        type: mongoose.Schema.ObjectId,
+        type: Schema.ObjectId,
         ref: "User",
         required: true,
     },
@@ -84,4 +84,4 @@ const productSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Products", productSchema);
+export default model("Products", productSchema);

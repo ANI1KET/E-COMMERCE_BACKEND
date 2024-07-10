@@ -1,18 +1,8 @@
-const express = require("express");
-const {
-    getAllProducts,
-    createProduct,
-    updateProduct,
-    deleteProduct,
-    getProductDetails,
-    createProductReview,
-    getProductReviews,
-    deleteReview,
-    getAdminProducts,
-} = require("../controllers/productController");
-const { isAuthenticatedUser, authorizeRole } = require("../middleware/auth");
+import { Router } from "express";
+import { getAllProducts, createProduct, updateProduct, deleteProduct, getProductDetails, createProductReview, getProductReviews, deleteReview, getAdminProducts } from "../controllers/productController.js";
+import { isAuthenticatedUser, authorizeRole } from "../middleware/auth.js";
 
-const router = express.Router();
+const router = Router();
 
 router.route("/products")
     .get(getAllProducts);  // router.get("/products", getAllProducts);
@@ -31,6 +21,4 @@ router.route("/reviews")
 router.route("/admin/products")
     .get(isAuthenticatedUser, authorizeRole("admin"), getAdminProducts);
 
-module.exports = router;
-
-
+export default router;

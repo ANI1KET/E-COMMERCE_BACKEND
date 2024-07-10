@@ -1,10 +1,10 @@
-const Product = require("../models/productModel");
-const ErrorHandler = require("../utils/errorhander");
-const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const ApiFeatures = require("../utils/apifeatures");
-const cloudinary = require("cloudinary");
+import Product from "../models/productModel.js";
+import ErrorHandler from "../utils/errorhander.js";
+import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
+import ApiFeatures from "../utils/apifeatures.js";
+import { v2 } from "cloudinary";
 
-exports.createProduct = catchAsyncErrors(async (req, res, next) => {
+export const createProduct = catchAsyncErrors(async (req, res, next) => {
     let images = [];
 
     if (typeof req.body.images === "string") {
@@ -16,7 +16,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     const imagesLinks = [];
 
     for (let i = 0; i < images.length; i++) {
-        const result = await cloudinary.v2.uploader.upload(images[i], {
+        const result = await v2.uploader.upload(images[i], {
             folder: "Products",
             width: 150,
             crop: "scale",
@@ -39,7 +39,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
+export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
     const resultPerPage = 10;
     const productsCount = await Product.countDocuments();
     const apiFeature = new ApiFeatures(Product.find(), req.query)
@@ -60,7 +60,7 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
+export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
     let product = await Product.find({ _id: req.params.id })
     // .catch((err) => { return; });
 
@@ -76,7 +76,7 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
+export const updateProduct = catchAsyncErrors(async (req, res, next) => {
     let product = await Product.findById(req.params.id);
 
     if (!product) {
@@ -93,13 +93,13 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
 
     if (images !== undefined) {
         for (let i = 0; i < product.images.length; i++) {
-            await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+            await v2.uploader.destroy(product.images[i].public_id);
         }
 
         const imagesLinks = [];
 
         for (let i = 0; i < images.length; i++) {
-            const result = await cloudinary.v2.uploader.upload(images[i], {
+            const result = await v2.uploader.upload(images[i], {
                 folder: "products",
             });
 
@@ -123,7 +123,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
+export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
 
     // let product = await Product.deleteOne({ _id: req.params.id })
@@ -134,7 +134,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
     // Deleting Images From Cloudinary
     for (let i = 0; i < product.images.length; i++) {
-        await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+        await v2.uploader.destroy(product.images[i].public_id);
     }
 
     await product.deleteOne();
@@ -145,7 +145,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
+export const createProductReview = catchAsyncErrors(async (req, res, next) => {
     const { rating, comment, productId } = req.body;
 
     const review = {
@@ -180,8 +180,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-// Get All Reviews of a product
-exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
+export const getProductReviews = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.query.id);
     if (!product) {
         return next(new ErrorHander("Product not found", 404));
@@ -192,8 +191,7 @@ exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-// Delete Review
-exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
+export const deleteReview = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.query.productId);
     if (!product) {
         return next(new ErrorHander("Product not found", 404));
@@ -223,8 +221,7 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-// Get All Product (Admin)
-exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
     const products = await Product.find();
 
     res.status(200).json({

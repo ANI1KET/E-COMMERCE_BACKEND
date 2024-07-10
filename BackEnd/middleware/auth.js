@@ -1,9 +1,9 @@
-const catchAsyncErrors = require("./catchAsyncErrors");
-const ErrorHander = require("../utils/errorhander");
-const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
+import catchAsyncErrors from "./catchAsyncErrors.js";
+import ErrorHander from "../utils/errorhander.js";
+import { verify } from "jsonwebtoken";
+import User from "../models/userModel.js";
 
-exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
+export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
 
     const { token } = req.cookies; // const token = req.cookies.token;
     // const token = req.cookies; // Returns Object
@@ -12,13 +12,13 @@ exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHander("Please Login to access all resource", 401));
     }
 
-    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedData = verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decodedData.id);
     next();
 });
 
 // exports.authorizeRole = (...roles) => {
-exports.authorizeRole = (roles) => {
+export function authorizeRole(roles) {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
             return next(
@@ -28,4 +28,4 @@ exports.authorizeRole = (roles) => {
         }
         next();
     };
-};
+}

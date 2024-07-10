@@ -1,22 +1,9 @@
-const express = require("express");
-const {
-    registerUser,
-    loginUser,
-    logout,
-    forgotPassword,
-    resetPassword,
-    getUserDetails,
-    updatePassword,
-    updateProfile,
-    getAllUser,
-    getSingleUser,
-    updateUserRole,
-    deleteUser,
-} = require("../controllers/userController");
+import { Router } from "express";
+import { registerUser, loginUser, logout, forgotPassword, resetPassword, getUserDetails, updatePassword, updateProfile, getAllUser, getSingleUser, updateUserRole, deleteUser } from "../controllers/userController.js";
 
-const { isAuthenticatedUser, authorizeRole } = require("../middleware/auth");
+import { isAuthenticatedUser, authorizeRole } from "../middleware/auth.js";
 
-const router = express.Router();
+const router = Router();
 
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
@@ -32,4 +19,4 @@ router.route("/admin/user/:id")
     .put(isAuthenticatedUser, authorizeRole("admin"), updateUserRole)
     .delete(isAuthenticatedUser, authorizeRole("admin"), deleteUser);
 
-module.exports = router;
+export default router;
