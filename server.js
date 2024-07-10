@@ -1,5 +1,6 @@
 import app from './app.js';
-import { v2 } from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
+
 import connectDatabase from './config/database.js';
 
 import { config } from 'dotenv';
@@ -7,7 +8,7 @@ config({ path: "config/config.env" });
 
 connectDatabase();
 
-v2.config({
+cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
