@@ -20,7 +20,10 @@ app.use(json());
 app.use(cookieParser());
 app.use(_urlencoded({ extended: true }));
 app.use(fileUpload());
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true,
+}));
 
 import product from './routes/productRoute.js';
 import user from './routes/userRoute.js';

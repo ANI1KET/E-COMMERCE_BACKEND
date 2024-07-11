@@ -7,7 +7,8 @@ import { createHash } from "crypto";
 import { v2 } from "cloudinary";
 
 export const registerUser = catchAsyncErrors(async (req, res, next) => {
-    // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    console.log(req.body);
+    // const myCloud = await v2.uploader.upload(req.body.avatar, {
     //     folder: "Avatars",
     //     width: 150,
     //     crop: "scale",

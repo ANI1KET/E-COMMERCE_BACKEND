@@ -4,7 +4,6 @@ import { verify } from "jsonwebtoken";
 import User from "../models/userModel.js";
 
 export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-
     const { token } = req.cookies; // const token = req.cookies.token;
     // const token = req.cookies; // Returns Object
 
